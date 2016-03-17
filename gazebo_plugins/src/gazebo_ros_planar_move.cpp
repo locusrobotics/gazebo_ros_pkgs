@@ -110,8 +110,38 @@ namespace gazebo
     else 
     {
       odometry_rate_ = sdf->GetElement("odometryRate")->Get<double>();
-    } 
- 
+    }
+
+    broadcast_transform_ = true;
+    if (sdf->HasElement("broadcastTransform"))
+    {
+      broadcast_transform_ = sdf->GetElement("broadcastTransform")->Get<bool>();
+    }
+
+    linear_velocity_variance_ = 0.1;
+    if (sdf->HasElement("linearVelocityVariance"))
+    {
+      linear_velocity_variance_ = sdf->GetElement("linearVelocityVariance")->Get<double>();
+    }
+
+    angular_velocity_variance_ = 0.05;
+    if (sdf->HasElement("angularVelocityVariance"))
+    {
+      linear_velocity_variance_ = sdf->GetElement("angularVelocityVariance")->Get<double>();
+    }
+
+    linear_velocity_variance_scale_ = 0.0;
+    if (sdf->HasElement("linearVelocityVarianceScale"))
+    {
+      linear_velocity_variance_scale_ = sdf->GetElement("linearVelocityVarianceScale")->Get<double>();
+    }
+
+    angular_velocity_variance_scale_ = 0.0;
+    if (sdf->HasElement("angularVelocityVarianceScale"))
+    {
+      linear_velocity_variance_scale_ = sdf->GetElement("angularVelocityVarianceScale")->Get<double>();
+    }
+
     last_odom_publish_time_ = parent_->GetWorld()->GetSimTime();
     last_odom_pose_ = parent_->GetWorldPose();
     x_ = 0;
@@ -219,10 +249,13 @@ namespace gazebo
     tf::Quaternion qt(pose.rot.x, pose.rot.y, pose.rot.z, pose.rot.w);
     tf::Vector3 vt(pose.pos.x, pose.pos.y, pose.pos.z);
 
-    tf::Transform base_footprint_to_odom(qt, vt);
-    transform_broadcaster_->sendTransform(
-        tf::StampedTransform(base_footprint_to_odom, current_time, odom_frame,
-            base_footprint_frame));
+    if(broadcast_transform_)
+    {
+      tf::Transform base_footprint_to_odom(qt, vt);
+      transform_broadcaster_->sendTransform(
+          tf::StampedTransform(base_footprint_to_odom, current_time, odom_frame,
+              base_footprint_frame));
+    }
 
     // publish odom topic
     odom_.pose.pose.position.x = pose.pos.x;
@@ -232,17 +265,22 @@ namespace gazebo
     odom_.pose.pose.orientation.y = pose.rot.y;
     odom_.pose.pose.orientation.z = pose.rot.z;
     odom_.pose.pose.orientation.w = pose.rot.w;
-    odom_.pose.covariance[0] = 0.00001;
-    odom_.pose.covariance[7] = 0.00001;
     odom_.pose.covariance[14] = 1000000000000.0;
     odom_.pose.covariance[21] = 1000000000000.0;
     odom_.pose.covariance[28] = 1000000000000.0;
-    odom_.pose.covariance[35] = 0.001;
 
     // get velocity in /odom frame
     math::Vector3 linear;
     linear.x = (pose.pos.x - last_odom_pose_.pos.x) / step_time;
     linear.y = (pose.pos.y - last_odom_pose_.pos.y) / step_time;
+
+    odom_.pose.covariance[0] += calculateScaledVelocityVariance(linear.x,
+                                                                linear_velocity_variance_,
+                                                                linear_velocity_variance_scale_) * step_time;
+    odom_.pose.covariance[7] += calculateScaledVelocityVariance(linear.y,
+                                                                linear_velocity_variance_,
+                                                                linear_velocity_variance_scale_) * step_time;
+
     if (rot_ > M_PI / step_time) 
     { 
       // we cannot calculate the angular velocity correctly
@@ -264,11 +302,29 @@ namespace gazebo
     odom_.twist.twist.linear.x = cosf(yaw) * linear.x + sinf(yaw) * linear.y;
     odom_.twist.twist.linear.y = cosf(yaw) * linear.y - sinf(yaw) * linear.x;
 
+    odom_.twist.covariance[0] = calculateScaledVelocityVariance(odom_.twist.twist.linear.x,
+                                                                linear_velocity_variance_,
+                                                                linear_velocity_variance_scale_);
+    odom_.twist.covariance[7] = calculateScaledVelocityVariance(odom_.twist.twist.linear.y,
+                                                                linear_velocity_variance_,
+                                                                linear_velocity_variance_scale_);
+    odom_.twist.covariance[35] = calculateScaledVelocityVariance(odom_.twist.twist.angular.z,
+                                                                 angular_velocity_variance_,
+                                                                 angular_velocity_variance_scale_);
+    odom_.pose.covariance[35] += odom_.twist.covariance[35];
+
     odom_.header.stamp = current_time;
     odom_.header.frame_id = odom_frame;
     odom_.child_frame_id = base_footprint_frame;
 
     odometry_pub_.publish(odom_);
+  }
+
+  double GazeboRosPlanarMove::calculateScaledVelocityVariance(const double velocity,
+                                                              const double velocity_variance,
+                                                              const double scale_factor)
+  {
+    return velocity_variance + ::fabs(velocity) * scale_factor;
   }
 
   GZ_REGISTER_MODEL_PLUGIN(GazeboRosPlanarMove)
