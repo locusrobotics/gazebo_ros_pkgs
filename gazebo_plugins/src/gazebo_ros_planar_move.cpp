@@ -142,6 +142,42 @@ namespace gazebo
       linear_velocity_variance_scale_ = sdf->GetElement("angularVelocityVarianceScale")->Get<double>();
     }
 
+    static_x_variance_ = false;
+    if (sdf->HasElement("staticXVariance"))
+    {
+      static_x_variance_ = sdf->GetElement("staticXVariance")->Get<bool>();
+    }
+
+    x_variance_ = 0.0;
+    if (static_x_variance_ && sdf->HasElement("xVariance"))
+    {
+      x_variance_ = sdf->GetElement("xVariance")->Get<double>();
+    }
+
+    static_y_variance_ = false;
+    if (sdf->HasElement("staticYVariance"))
+    {
+      static_y_variance_ = sdf->GetElement("staticYVariance")->Get<bool>();
+    }
+
+    y_variance_ = 0.0;
+    if (static_y_variance_ && sdf->HasElement("yVariance"))
+    {
+      y_variance_ = sdf->GetElement("yVariance")->Get<double>();
+    }
+
+    static_yaw_variance_ = false;
+    if (sdf->HasElement("staticYawVariance"))
+    {
+      static_yaw_variance_ = sdf->GetElement("staticYawVariance")->Get<bool>();
+    }
+
+    yaw_variance_ = 0.0;
+    if (static_yaw_variance_ && sdf->HasElement("yawVariance"))
+    {
+      yaw_variance_ = sdf->GetElement("yawVariance")->Get<double>();
+    }
+
     last_odom_publish_time_ = parent_->GetWorld()->GetSimTime();
     last_odom_pose_ = parent_->GetWorldPose();
     x_ = 0;
@@ -274,12 +310,27 @@ namespace gazebo
     linear.x = (pose.pos.x - last_odom_pose_.pos.x) / step_time;
     linear.y = (pose.pos.y - last_odom_pose_.pos.y) / step_time;
 
-    odom_.pose.covariance[0] += calculateScaledVelocityVariance(linear.x,
-                                                                linear_velocity_variance_,
-                                                                linear_velocity_variance_scale_) * step_time;
-    odom_.pose.covariance[7] += calculateScaledVelocityVariance(linear.y,
-                                                                linear_velocity_variance_,
-                                                                linear_velocity_variance_scale_) * step_time;
+    if (static_x_variance_)
+    {
+      odom_.pose.covariance[0] = x_variance_;
+    }
+    else
+    {
+      odom_.pose.covariance[0] += calculateScaledVelocityVariance(linear.x,
+                                                                  linear_velocity_variance_,
+                                                                  linear_velocity_variance_scale_) * step_time;
+    }
+
+    if (static_y_variance_)
+    {
+      odom_.pose.covariance[7] = y_variance_;
+    }
+    else
+    {
+      odom_.pose.covariance[7] += calculateScaledVelocityVariance(linear.y,
+                                                                  linear_velocity_variance_,
+                                                                  linear_velocity_variance_scale_) * step_time;
+    }
 
     if (rot_ > M_PI / step_time) 
     { 
@@ -311,7 +362,15 @@ namespace gazebo
     odom_.twist.covariance[35] = calculateScaledVelocityVariance(odom_.twist.twist.angular.z,
                                                                  angular_velocity_variance_,
                                                                  angular_velocity_variance_scale_);
-    odom_.pose.covariance[35] += odom_.twist.covariance[35];
+
+    if (static_yaw_variance_)
+    {
+      odom_.pose.covariance[35] = yaw_variance_;
+    }
+    else
+    {
+      odom_.pose.covariance[35] += odom_.twist.covariance[35] * step_time;
+    }
 
     odom_.header.stamp = current_time;
     odom_.header.frame_id = odom_frame;
