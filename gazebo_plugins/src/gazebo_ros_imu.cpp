@@ -99,15 +99,6 @@ void GazeboRosIMU::LoadThread()
   else
     this->link_name_ = this->sdf->Get<std::string>("bodyName");
 
-  if (!this->sdf->HasElement("frameId"))
-  {
-    ROS_INFO("imu plugin missing <frameId>, defaults to 'imu'");
-    this->frame_id_ = "imu";
-    return;
-  }
-  else
-    this->frame_id_ = this->sdf->Get<std::string>("frameId");
-
   if (!this->sdf->HasElement("xyzOffset"))
   {
     ROS_INFO("imu plugin missing <xyzOffset>, defaults to 0s");
@@ -133,6 +124,13 @@ void GazeboRosIMU::LoadThread()
   else
     this->update_rate_ = this->sdf->GetElement("updateRate")->Get<double>();
 
+  if (!this->sdf->HasElement("frameName"))
+  {
+    ROS_INFO("imu plugin missing <frameName>, defaults to <bodyName>");
+    this->frame_name_ = link_name_;
+  }
+  else
+    this->frame_name_ = this->sdf->Get<std::string>("frameName");
 
   // Make sure the ROS node for Gazebo has already been initialized
   if (!ros::isInitialized())
@@ -243,7 +241,7 @@ void GazeboRosIMU::UpdateChild()
     }
 
     // copy data into pose message
-    this->imu_msg_.header.frame_id = this->frame_id_;
+    this->imu_msg_.header.frame_id = this->frame_name_;
     this->imu_msg_.header.stamp.sec = cur_time.sec;
     this->imu_msg_.header.stamp.nsec = cur_time.nsec;
 
