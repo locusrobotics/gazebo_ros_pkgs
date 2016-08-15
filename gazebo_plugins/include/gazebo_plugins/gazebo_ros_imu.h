@@ -68,6 +68,9 @@ namespace gazebo
     /// \brief store link name
     private: std::string link_name_;
 
+    /// \brief store frame name
+    private: std::string frame_name_;
+
     /// \brief topic name
     private: std::string topic_name_;
 
@@ -99,9 +102,6 @@ namespace gazebo
 
     /// \brief for setting ROS name space
     private: std::string robot_namespace_;
-
-    /// \brief for setting ROS message frame_id (bodyName gets collapsed for static joints)
-    private: std::string frame_id_;
 
     /// \brief call back when using service
     private: bool ServiceCallback(std_srvs::Empty::Request &req,
