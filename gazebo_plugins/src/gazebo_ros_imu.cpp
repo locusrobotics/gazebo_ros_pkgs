@@ -99,6 +99,15 @@ void GazeboRosIMU::LoadThread()
   else
     this->link_name_ = this->sdf->Get<std::string>("bodyName");
 
+  if (!this->sdf->HasElement("frameId"))
+  {
+    ROS_INFO("imu plugin missing <frameId>, defaults to 'imu'");
+    this->frame_id_ = "imu";
+    return;
+  }
+  else
+    this->frame_id_ = this->sdf->Get<std::string>("frameId");
+
   if (!this->sdf->HasElement("xyzOffset"))
   {
     ROS_INFO("imu plugin missing <xyzOffset>, defaults to 0s");

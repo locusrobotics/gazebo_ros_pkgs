@@ -56,6 +56,10 @@ namespace gazebo {
       virtual void FiniChild();
 
     private:
+      double calculateScaledVelocityVariance(const double velocity,
+                                             const double velocity_variance,
+                                             const double scale_factor);
+
       void publishOdometry(double step_time);
 
       physics::ModelPtr parent_;
@@ -88,7 +92,18 @@ namespace gazebo {
       double x_;
       double y_;
       double rot_;
+      double linear_velocity_variance_;
+      double angular_velocity_variance_;
+      double linear_velocity_variance_scale_;
+      double angular_velocity_variance_scale_;
+      double x_variance_;
+      double y_variance_;
+      double yaw_variance_;
       bool alive_;
+      bool broadcast_transform_;
+      bool static_x_variance_;
+      bool static_y_variance_;
+      bool static_yaw_variance_;
       common::Time last_odom_publish_time_;
       math::Pose last_odom_pose_;
 
