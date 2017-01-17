@@ -130,6 +130,14 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf 
       this->publish_tf_ = _sdf->GetElement("publishTf")->Get<bool>();
     }
 
+    this->publish_odom_ = true;
+    if (!_sdf->HasElement("publishOdom")) {
+      ROS_WARN("GazeboRosDiffDrive Plugin (ns = %s) missing <publishOdom>, defaults to %d",
+          this->robot_namespace_.c_str(), this->publish_odom_);
+    } else {
+      this->publish_odom_ = _sdf->GetElement("publishOdom")->Get<bool>();
+    }
+
     // Initialize update rate stuff
     if ( this->update_rate_ > 0.0 ) this->update_period_ = 1.0 / this->update_rate_;
     else this->update_period_ = 0.0;
@@ -167,7 +175,7 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf 
     cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
     ROS_INFO("%s: Subscribe to %s!", gazebo_ros_->info(), command_topic_.c_str());
 
-    if (this->publish_tf_)
+    if (this->publish_odom_)
     {
       odometry_publisher_ = gazebo_ros_->node()->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
       ROS_INFO("%s: Advertise odom on %s !", gazebo_ros_->info(), odometry_topic_.c_str());
@@ -263,7 +271,7 @@ void GazeboRosDiffDrive::UpdateChild()
     double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
 
     if ( seconds_since_last_update > update_period_ ) {
-        if (this->publish_tf_) publishOdometry ( seconds_since_last_update );
+        if (publish_odom_ || publish_tf_) publishOdometry ( seconds_since_last_update );
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
 
@@ -455,27 +463,32 @@ void GazeboRosDiffDrive::publishOdometry ( double step_time )
         odom_.twist.twist.linear.y = cosf ( yaw ) * linear.y - sinf ( yaw ) * linear.x;
     }
 
-    tf::Transform base_footprint_to_odom ( qt, vt );
-    transform_broadcaster_->sendTransform (
-        tf::StampedTransform ( base_footprint_to_odom, current_time,
-                               odom_frame, base_footprint_frame ) );
+    if (publish_tf_)
+    {
+      tf::Transform base_footprint_to_odom ( qt, vt );
+      transform_broadcaster_->sendTransform (
+          tf::StampedTransform ( base_footprint_to_odom, current_time,
+                                 odom_frame, base_footprint_frame ) );
+    }
+
+    if (publish_odom_)
+    {
+      // set covariance
+      odom_.pose.covariance[0] = 0.00001;
+      odom_.pose.covariance[7] = 0.00001;
+      odom_.pose.covariance[14] = 1000000000000.0;
+      odom_.pose.covariance[21] = 1000000000000.0;
+      odom_.pose.covariance[28] = 1000000000000.0;
+      odom_.pose.covariance[35] = 0.001;
 
 
-    // set covariance
-    odom_.pose.covariance[0] = 0.00001;
-    odom_.pose.covariance[7] = 0.00001;
-    odom_.pose.covariance[14] = 1000000000000.0;
-    odom_.pose.covariance[21] = 1000000000000.0;
-    odom_.pose.covariance[28] = 1000000000000.0;
-    odom_.pose.covariance[35] = 0.001;
+      // set header
+      odom_.header.stamp = current_time;
+      odom_.header.frame_id = odom_frame;
+      odom_.child_frame_id = base_footprint_frame;
 
-
-    // set header
-    odom_.header.stamp = current_time;
-    odom_.header.frame_id = odom_frame;
-    odom_.child_frame_id = base_footprint_frame;
-
-    odometry_publisher_.publish ( odom_ );
+      odometry_publisher_.publish ( odom_ );
+    }
 }
 
 GZ_REGISTER_MODEL_PLUGIN ( GazeboRosDiffDrive )
