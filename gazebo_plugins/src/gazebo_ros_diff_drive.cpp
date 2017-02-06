@@ -333,7 +333,7 @@ void GazeboRosDiffDrive::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& 
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
     x_ = cmd_msg->linear.x;
-    rot_ = cmd_msg->angular.z;
+    rot_ = -cmd_msg->angular.z; // Negating to handle incorrect conversion math
 }
 
 void GazeboRosDiffDrive::QueueThread()
