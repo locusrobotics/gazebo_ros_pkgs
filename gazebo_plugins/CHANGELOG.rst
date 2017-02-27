@@ -4,6 +4,12 @@ Changelog for package gazebo_plugins
 
 2.5.7 (2016-06-10)
 ------------------
+* 2.5.7-3
+* Separating odom and tf publication parameters
+* Removing missed frame_id block
+* Adding static covariances
+* Fixing IMU frame_id issue
+* Adding parameters for broadcasting the tf transform and better covariance calculation
 
 2.5.6 (2016-04-28)
 ------------------
