@@ -2,6 +2,21 @@
 Changelog for package gazebo_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.6.3 (2017-09-07)
+------------------
+* [gazebo_ros] Changed the spawn model methods to spawn also lights. (`#511 <https://github.com/locusrobotics/gazebo_ros_pkgs/issues/511>`_)
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights (and renamed accordingly).
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+* Contributors: Alessandro Ambrosano
+
 2.5.10 (2017-03-03)
 -------------------
 
