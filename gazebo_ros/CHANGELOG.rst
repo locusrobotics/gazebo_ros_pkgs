@@ -2,6 +2,9 @@
 Changelog for package gazebo_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.16 (2017-09-07)
+-------------------
+
 2.4.15 (2017-08-09)
 -------------------
 * Fix build (`#600 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/600>`_)
