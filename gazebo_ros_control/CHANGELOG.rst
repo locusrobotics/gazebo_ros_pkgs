@@ -2,7 +2,7 @@
 Changelog for package gazebo_ros_control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.6.3 (2017-09-07)
+2.6.0 (2017-09-07)
 ------------------
 * Change build system to set DEPEND on Gazebo/SDFormat (fix catkin warning)
   Added missing DEPEND clauses to catkin_package to fix gazebo catkin warning. Note that after the change problems could appear related to -lpthreads errors. This is an known issue related to catkin: https://github.com/ros/catkin/issues/856.

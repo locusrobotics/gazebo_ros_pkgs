@@ -2,7 +2,7 @@
 Changelog for package gazebo_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.6.3 (2017-09-07)
+2.6.0 (2017-09-07)
 ------------------
 * [gazebo_ros] Changed the spawn model methods to spawn also lights. (`#511 <https://github.com/locusrobotics/gazebo_ros_pkgs/issues/511>`_)
   * [gazebo_ros] Changed the spawn model methods to spawn also lights (and renamed accordingly).
