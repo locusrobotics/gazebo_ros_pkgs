@@ -2,6 +2,9 @@
 Changelog for package gazebo_ros_control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.7.0 (2017-10-11)
+------------------
+
 2.6.0 (2017-09-07)
 ------------------
 * Change build system to set DEPEND on Gazebo/SDFormat (fix catkin warning)
