@@ -86,6 +86,22 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     this->bumper_topic_name_ =
       _sdf->GetElement("bumperTopicName")->Get<std::string>();
 
+  // "publishing Locus 'bump' boolean to this topic name: "
+  this->locus_bump_topic_name_ = "bump";
+  if (_sdf->HasElement("locusBumpTopicName"))
+  {
+    this->has_locus_bump_ = true;
+    this->locus_bump_topic_name_ =
+      _sdf->GetElement("locusBumpTopicName")->Get<std::string>();
+    ROS_INFO_NAMED("locus_bump", "Locus bump configured");
+  }
+  else
+  {
+    this->has_locus_bump_ = false;
+    this->locus_bump_topic_name_ = "unconfigured_locus_bump";
+    ROS_INFO_NAMED("locus_bump", "Locus bump not configured");
+  }
+
   // "transform contact/collisions pose, forces to this body (link) name: "
   //   << this->frame_name_ << std::endl;
   if (!_sdf->HasElement("frameName"))
@@ -114,6 +130,12 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   this->contact_pub_ = this->rosnode_->advertise<gazebo_msgs::ContactsState>(
     std::string(this->bumper_topic_name_), 1);
 
+  this->locus_bump_pub_ = this->rosnode_->advertise<std_msgs::Bool>(
+      std::string(this->locus_bump_topic_name_), 1, true);
+  // Initial false bump report - if this is incorrect it will be replaced
+  this->locus_bump_msg_.data = false;
+  this->locus_bump_pub_.publish(this->locus_bump_msg_);
+
   // Initialize
   // start custom queue for contact bumper
   this->callback_queue_thread_ = boost::thread(
@@ -132,15 +154,37 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 // Update the controller
 void GazeboRosBumper::OnContact()
 {
-  if (this->contact_pub_.getNumSubscribers() <= 0)
-    return;
-
   msgs::Contacts contacts;
   contacts = this->parentSensor->Contacts();
   /// \TODO: need a time for each Contact in i-loop, they may differ
   this->contact_state_msg_.header.frame_id = this->frame_name_;
   this->contact_state_msg_.header.stamp = ros::Time(contacts.time().sec(),
                                contacts.time().nsec());
+
+  /*
+   * Locus-specific bump calculation and output
+   *
+   * Publish a boolean on the Locus bump topic indicating state changes in
+   * the bumper - no need for repeating the same msg, only publish on change
+   * to mimic the real Locus hardware interface to the bumper.
+   */
+  if (this->has_locus_bump_)
+  {
+    is_bumped = (contacts.contact_size() > 0);
+
+    if (this->locus_bump_msg_.data != is_bumped)
+    {
+      this->locus_bump_msg_.data = is_bumped;
+      this->locus_bump_pub_.publish(this->locus_bump_msg_);
+    }
+  }
+
+  // Moved this to after the Locus-specific bump functionality so that,
+  // in the event no-one is interested in the Gazebo Contacts, we still
+  // get Locus bump information.
+
+  if (this->contact_pub_.getNumSubscribers() <= 0)
+    return;
 
 /*
   /// \TODO: get frame_name_ transforms from tf or gazebo
