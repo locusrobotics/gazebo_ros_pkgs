@@ -29,6 +29,7 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
+#include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 
 #include <gazebo_msgs/ContactState.h>
@@ -66,16 +67,21 @@ namespace gazebo
     /// \brief pointer to ros node
     private: ros::NodeHandle* rosnode_;
     private: ros::Publisher contact_pub_;
+    private: ros::Publisher locus_bump_pub_;
 
     private: sensors::ContactSensorPtr parentSensor;
 
     /// \brief set topic name of broadcast
     private: std::string bumper_topic_name_;
+    private: std::string locus_bump_topic_name_;
 
     private: std::string frame_name_;
 
     /// \brief broadcast some string for now.
     private: gazebo_msgs::ContactsState contact_state_msg_;
+    private: std_msgs::Bool locus_bump_msg_;
+    private: bool has_locus_bump_;
+    private: bool is_bumped;
 
     /// \brief for setting ROS name space
     private: std::string robot_namespace_;
