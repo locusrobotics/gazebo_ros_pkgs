@@ -1,6 +1,18 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(gazebo_plugins)
 
+# Check which version of ubuntu we are running
+find_program(LSB_RELEASE_EXEC lsb_release)
+execute_process(COMMAND ${LSB_RELEASE_EXEC} --codename --short
+    OUTPUT_VARIABLE LSB_RELEASE_CODENAME_SHORT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Exit if we're not building on jammy
+if (NOT LSB_RELEASE_CODEAME_SHORT STREQUAL "jammy")
+  return()
+endif()
+
 option(ENABLE_DISPLAY_TESTS "Enable the building of tests that requires a display" OFF)
 
 find_package(catkin REQUIRED COMPONENTS
