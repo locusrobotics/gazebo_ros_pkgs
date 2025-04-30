@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(gazebo_plugins)
 
+# Check which version of ubuntu we are running
+find_program(LSB_RELEASE_EXEC lsb_release)
+execute_process(COMMAND ${LSB_RELEASE_EXEC} --codename --short
+    OUTPUT_VARIABLE OS_CODENAME
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+if (NOT OS_CODENAME STREQUAL "jammy")
+  message(STATUS "Detected Ubuntu version different than jammy, not building this package ")
+  return()
+endif()
+
 option(ENABLE_DISPLAY_TESTS "Enable the building of tests that requires a display" OFF)
 
 find_package(catkin REQUIRED COMPONENTS

@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(gazebo_ros_control)
 
+# Check which version of ubuntu we are running
+find_program(LSB_RELEASE_EXEC lsb_release)
+execute_process(COMMAND ${LSB_RELEASE_EXEC} --codename --short
+    OUTPUT_VARIABLE OS_CODENAME
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+if (NOT OS_CODENAME STREQUAL "jammy")
+  message(STATUS "Detected Ubuntu version different than jammy, not building this package ")
+  return()
+endif()
+
 # Load catkin and all dependencies required for this package
 find_package(catkin REQUIRED COMPONENTS
   gazebo_dev
