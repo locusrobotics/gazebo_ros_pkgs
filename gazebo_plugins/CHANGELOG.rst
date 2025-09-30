@@ -237,8 +237,8 @@ Changelog for package gazebo_plugins
 * Fix: add gazebo_ros_range to catkin package libraries (`#558 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/558>`_)
 * Contributors: Christoph Rist, Dave Coleman
 
-Forthcoming
------------
+2.10.0 (2025-09-30)
+-------------------
 * Only build these packages on jammy
 * 2.9.3
 * Update changelogs

@@ -97,8 +97,8 @@ Changelog for package gazebo_dev
 2.5.11 (2017-04-18)
 -------------------
 
-Forthcoming
------------
+2.10.0 (2025-09-30)
+-------------------
 * Only build these packages on jammy
 * 2.9.3
 * Update changelogs

@@ -59,8 +59,8 @@ Changelog for package gazebo_ros_pkgs
 2.5.11 (2017-04-18)
 -------------------
 
-Forthcoming
------------
+2.10.0 (2025-09-30)
+-------------------
 * 2.9.3
 * Update changelogs
 * Noetic: Add `<deprecated>` tag to package.xml files (#1566)
