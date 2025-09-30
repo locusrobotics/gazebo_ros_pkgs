@@ -105,6 +105,108 @@ Changelog for package gazebo_ros_control
   * fix warning message fix
 * Contributors: Andreas Bihlmaier, Dave Coleman
 
+Forthcoming
+-----------
+* Only build these packages on jammy
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* It was bugging me (#1564)
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* colcon.pkg: build gazebo first in colcon workspace (#1135)
+  Add a colcon.pkg file to gazebo_dev with gazebo's cmake project
+  name "Gazebo" listed as a dependency to support building
+  gazebo from source in a colcon workspace.
+  * Add colcon.pkg files for other packages
+  Copy colcon.pkg to gazebo_ros, gazebo_plugins, and
+  gazebo_ros_control so that --merge-install won't be required.
+* 2.9.1
+* Prepare changelogs
+* 2.9.0
+* Update changelogs
+* restrict Windows header namespace. (#1023)
+* [Windows][melodic-devel] more Windows build break fix (#975)
+  * Fix CMake install error for Windows build.
+  * conditionally include <sys/time.h>
+* 2.8.5
+* Update changelog
+* use C++11 std sleep instead of usleep. (#877)
+* Lower minimum cmake version (#817)
+* 2.8.4
+* Update changelog for 2.8.4
+* 2.8.3
+* Update changelogs
+* Remove legacy in gazebo_ros_control for robotNamespace (#709)
+  See pull request #637
+* 2.8.2
+* Prepare changelogs
+* Fix the build on Ubuntu Artful. (#715)
+  Artful has some bugs in its cmake files for Simbody that
+  cause it to fail the build.  If we are on artful, remove
+  the problematic entries.
+* 2.8.1
+* Prepare changelogs for release
+* Update version to 2.8.0
+* Don't ignore robotNamespace in gazebo_ros_control nodes (lunar-devel) (#706)
+  * Don't ignore robotNamespace
+  When creating the NodeHandle for reading the PID parameters, the model_nh was always ignored. Instead, all parameters were read from /gazebo_ros_control/pid_gains/<joint_name>/* instead of /<robot_name>/gazebo_ros_control/pid_gains/<joint_name>/*.
+  This commit restores the intended behavior, i.e., the parameters will now read from <robot_name>/..., where <robot_name> is specified via the robotNamespace plugin parameter or the parent name.
+* add physics type for dart with joint velocity interface (#701)
+* Fix #612 for Gazebo9 (lunar-devel) (#699)
+  * Fix #612 for Gazebo9
+  This commit fixes #612, but only for Gazebo9. Fixing it for Gazebo7 (the version used in ROS Kinetic) requires the following PR to be backported to Gazebo 7 and 8:
+* 2.7.4
+* Prepare changelogs for new release
+* Fix last gazebo8 warnings! (lunar-devel) (#664)
+  { port of pull request #658 }
+  ifdefs for World::GetSimTime and World::GetPhysicsEngine
+* Fix gazebo8 warnings part 7: retry #642 on lunar (#660)
+  ifdef's for Joint::GetAngle and some cleanup (#642)
+  * fix major version check >= 8, instead of > 8
+  * gazebo_ros_bumper: use new API in commented code
+  * gazebo_ros_api_plugin: world pose in local vars
+  * worldLinearVel as local var in hand of god plugin
+  * gazebo8+: Joint::GetAngle -> Joint::Position
+* 2.7.3
+* Update changelogs
+* Replace Events::Disconnect* with pointer reset (#626)
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* Revert gazebo8 changes in Lunar and back to use gazebo7 (#583)
+* 2.7.1
+* Update changelogs for first Lunar release
+* Fixes for compilation and warnings in Lunar-devel  (#573)
+  Multiple fixes for compilation and warnings coming from Gazebo8 and ignition-math3
+* Use 2.7.0 as starting version
+* Less exciting console output (#561)
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* 2.5.12
+* Changelogs for next version
+* Fixed broken gazebo_ros_control tutorial link (#566)
+* 2.5.11
+* Changelogs to prepare for next 2.5.11
+* Change build system to set DEPEND on Gazebo/SDFormat (fix catkin warning)
+  Added missing DEPEND clauses to catkin_package to fix gazebo catkin warning. Note that after the change problems could appear related to -lpthreads errors. This is an known issue related to catkin: https://github.com/ros/catkin/issues/856.
+* Make gazebo_ros_control compatible with ros_control with respect to <hardwareInterface> tag (#550)
+  * ros_control expects "<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>", i.e. "hardware_interface/" prefix
+  * add deprecation warning
+  * improve warning
+  * fix warning message fix
+* Contributors: Addisu Z. Taddese, Andreas Bihlmaier, Chris Lalancette, DaWiz, Dave Coleman, Gary Servin, Ian McMahon, Jose Luis Rivero, Kevin Allen, Paul Bovbel, Sean Yen, Sean Yen [MSFT], Steve Peters, Steven Peters
+
 2.5.10 (2017-03-03)
 -------------------
 * Revert catkin warnings to fix regressions (problems with catkin -lpthreads errors)

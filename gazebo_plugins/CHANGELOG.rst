@@ -237,6 +237,332 @@ Changelog for package gazebo_plugins
 * Fix: add gazebo_ros_range to catkin package libraries (`#558 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/558>`_)
 * Contributors: Christoph Rist, Dave Coleman
 
+Forthcoming
+-----------
+* Only build these packages on jammy
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* [ROS-O] compatible patches for newer systems (#1543)
+  Co-authored-by: Jochen Sprickerhof <git@jochen.sprickerhof.de>
+* Added parameter to always publish odom twist in local coordinates (#1531)
+* [gazebo_ros_diff_drive] Fixed spelling mistake (#1516)
+* Fix typo OpenCV_LIBRARIES (#1451)
+* gazebo_ros_ft_sensor: Fix incorrect 'imu' with 'ft_sensor' (#1436)
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* gazebo_ros_utils: don't set tf_prefix if empty (#1173)
+  Similar changes were made in #1143 to address #554,
+  but this class wasn't included.
+* Update test worlds to use the correct element names for xyzOffset and rpyOffset (#1206)
+  The test worlds add an extra 's' character, but the real names are singular.
+* [noetic][planar_move_controller] add cmdTimeout param (#1133)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* [noetic][Windows] Removing extra CameraPlugin header inclusion from gazebo_ros_camera_utils (#1161)
+* multi roboti example updated for noetic (#1154)
+* Leave empty tf_prefix values unset (#1143)
+  As reported in #554, tf_prefix has been long deprecated,
+  so if it is unset, leave it empty instead of giving
+  a default value.
+  Fixes #554.
+* Added directives if profiler is not installed (#1144)
+* colcon.pkg: build gazebo first in colcon workspace (#1135)
+  Add a colcon.pkg file to gazebo_dev with gazebo's cmake project
+  name "Gazebo" listed as a dependency to support building
+  gazebo from source in a colcon workspace.
+  * Add colcon.pkg files for other packages
+  Copy colcon.pkg to gazebo_ros, gazebo_plugins, and
+  gazebo_ros_control so that --merge-install won't be required.
+* [Noetic] Added Ignition common profiler to gazebo_plugins (#1139)
+  * Added Ignition common profiler
+  * Fixed typo
+* WheelSlip.cfg: ignore default parameter values (#1126)
+  The WheelSlipPlugin already has default values for the slip
+  compliance parameters, so ignore the default values set in
+  WheelSlip.cfg by making them negative and instruct the
+  callback to ignore negative values.
+  Also, ignore the `level` variable in callback so that
+  parameters set in launch file will not be ignored.
+* 2.9.1
+* Prepare changelogs
+* Noetic patch for Opencv libraries (#1106)
+  * Need to include calib3d for undistort method
+  * Add opencv cmake support where needed
+* 2.9.0
+* Update changelogs
+* gazebo_ros_wheel_slip plugin (Noetic) (#1081)
+  * gazebo_ros_wheel_slip plugin
+  Uses dynamic_reconfigure to set wheel slip parameters.
+  Requires gazebo 9.5.
+  * don't overwrite initial slip values
+  * Add test world using trisphere_cycles
+  * gazebo_ros_wheel_slip: remove unused member data
+* Fix bug in clipping of block laser depth values (#902)
+  * Fix bug in block laser with large min range
+  * Add block laser clipping test
+  * REP-117 clipping
+  Ranges were clipped to maxRange - minRange when they should have been
+  clipped to only maxRange
+* resolve marker orientation error, remove error mgss (#1096)
+* Add option to publish depth images in 16UC1 (#862)
+  Add option to publish depth images in 16UC1
+* [Noetic] changes to make it work with Python3 (#1069)
+  * Noetic - changes to make it work with Python3
+  Co-authored-by: Mabel Zhang <mabel.m.zhang@gmail.com>
+  Co-authored-by: Shane Loretz <sloretz@osrfoundation.org>
+* Generate normals with depth images (#1095)
+* [noetic] cherry-pick portable installation fixes. (#1089)
+  * cherry-pick portable installation fixes.
+  * removing pub_joint_trajectory_test
+* Adpated to OpenCV4 (#1068)
+* Include preprocessor conditions to avoid compile OnNewNormalsFrame and OnNewReflectanceFrame (#1071)
+* [Gazebo9] Added reflectance callback to publish reflectance image in ROS  (#1046)
+  * Added reflectance callback to publish reflectance image in ROS
+  * removed debug trace ros_depth_camera
+  * update reflectance_plugin tag from material to reflectance_map
+  * fixed index variable
+  * Added documentation and override
+  * updating reflectance_map tags
+* IMU sensor: comply with REP 145 by default
+  Change default value of initialOrientationAsReference to false
+  and print deprecation warning if user explicitly sets it to true.
+* Measure IMU orientation with respect to world (#1051)
+  Report the IMU orientation from the sensor plugin with respect to the world frame.
+  This complies with convention documented in REP 145: https://www.ros.org/reps/rep-0145.html
+  In order to not break existing behavior, users should opt-in by adding a new SDF tag.
+* [Gazebo 9] Created a MarkerArray to publish normals in ROS (#1047)
+  * created a MarkerArray to publish normals in ROS
+  * Added visualization msgs dependencie depthcamerasensor
+  * Added feedback
+  * populate point cloud when normals is activated
+  * argument to reduce the amount of normals to publish
+  * reduced computation in normals publisher
+* Fix a problem twice named with ros namespace. (#920)
+  gazebo_ros_imu_sensor: robotNamespace is no longer duplicate inside topics
+* gazebo_plugins: export plugin path in package.xml (#923)
+* Fix destructor of gazebo_ros_diff_drive.cpp (#1021)
+  Fix issue referenced in #123 where the destructor of ROS DiffDrive plugin causes gzserver to crash on model deletion.
+* [Windows][melodic-devel] more Windows build break fix (#975)
+  * Fix CMake install error for Windows build.
+  * conditionally include <sys/time.h>
+* Use ignition::math::Rand utility for portability. (#878)
+* 2.8.5
+* Update changelog
+* use C++11 std sleep instead of usleep. (#877)
+* Lower minimum cmake version (#817)
+* 2.8.4
+* Update changelog for 2.8.4
+* Fix various xacro/xml issues with tests
+* Fix handling of boolean values since Gazebo API returns
+  'true'/'false' as '1'/'0' strings
+* Add auto_distortion parameter to camera utils
+* Corrected depth camera plugin initialization (#748)
+  * Initialize depth_image_connect_count\_ to 0
+  * Removed duplicate line in CMakeLists.txt
+* Fix melodic compiler warnings (#744)
+  * Fix model_state_test. -v means --version not --verbose (#710)
+  * fix gazebo9 warnings by removing Set.*Accel calls (#728)
+  * fix gazebo9 warnings by removing Set.*Accel calls
+  * gazebo_plugins: don't use -r in tests
+* add missing distortion test worlds
+* fix 16bit test name
+* fix test
+* change triggered camera test name
+* fix race condition
+* fix untriggered first image
+* subscribe to trigger if CanTrigger is true
+* expect cameras don't subscribe to trigger topic
+* test for triggered_camera
+* update copyright dates and remove copied comments
+* remove compiler directives for old gazebo versions
+* use correct timestamp for images
+* fix threaded event connection
+* adds triggered cameras and multicameras
+* gazebo_plugins: install triggered camera plugins
+  Fixes #739.
+* 2.8.3
+* Update changelogs
+* End of legacy for diff drive plugin (#707)
+  In old versions of the code the right and left wheel were changed
+  to fix a former code issue. To fix an old package you have to
+  exchange left wheel by the right wheel.
+  This PR ends with the option to set legacy in a ROS parameter.
+* Remove gazebo_ros_joint_trajectory (#708)
+* Add publishOdomTF flag (#692) (#727)
+* DIFF DRIVE: wheel odometry twist is child frame (#719)
+* ROS UTILS: initialize rosnode\_ in alternative constructor to avoid segfault #478 (#718)
+* 2.8.2
+* Prepare changelogs
+* Fix the build on Ubuntu Artful. (#715)
+  Artful has some bugs in its cmake files for Simbody that
+  cause it to fail the build.  If we are on artful, remove
+  the problematic entries.
+* 2.8.1
+* Prepare changelogs for release
+* Update version to 2.8.0
+* Fix sensors after time reset (lunar-devel) (#705)
+  * camera plugin keeps publishing after negative sensor update interval
+  World resets result in a negative time differences between current world
+  time and the last recorded sensor update time, preventing the plugin
+  from publishing new frames. This commit detects such events and resets
+  the internal sensor update timestamp.
+  * block_laser, range, and joint_state_publisher keep publishing after clock reset
+  * p3d keeps publishing after clock reset
+* Support 16-bit cameras (lunar-devel) (#700)
+  * extend camera util to support 16 bit rgb image encoding
+  * support 16 bit mono
+  * add test for 16-bit camera
+  * update skip\_
+  * move camera test to camera.h, add camera16bit.cpp
+* Fix #612 for Gazebo9 (lunar-devel) (#699)
+  * Fix #612 for Gazebo9
+  This commit fixes #612, but only for Gazebo9. Fixing it for Gazebo7 (the version used in ROS Kinetic) requires the following PR to be backported to Gazebo 7 and 8:
+* gazebo_plugins: unique names for distortion tests (lunar-devel) (#686)
+  * gazebo_plugins: unique names for distortion tests
+  * Missing test files
+* 2.7.4
+* Prepare changelogs for new release
+* Adding velocity to joint state publisher gazebo plugin (#671)
+* Fix last gazebo8 warnings! (lunar-devel) (#664)
+  { port of pull request #658 }
+  ifdefs for World::GetSimTime and World::GetPhysicsEngine
+* Fix gazebo8 warnings part 7: retry #642 on lunar (#660)
+  ifdef's for Joint::GetAngle and some cleanup (#642)
+  * fix major version check >= 8, instead of > 8
+  * gazebo_ros_bumper: use new API in commented code
+  * gazebo_ros_api_plugin: world pose in local vars
+  * worldLinearVel as local var in hand of god plugin
+  * gazebo8+: Joint::GetAngle -> Joint::Position
+* Fix gazebo8 warnings part 10: ifdefs for GetModel, GetEntity, Light (lunar-devel) (#657)
+  * gazebo8 warnings: ifdef World::Light(string) calls
+  ~~~
+  sed -i -e 's@.*->Light(.*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->Light(\(.*\)@\1->LightByName(\2@' \
+  gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  * ifdef World::GetModel(int), World::GetModelCount()
+  First ifdef the GetModel(int) calls with the following:
+  ~~~
+  sed -i -e 's@.*GetModel(i).*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->ModelByIndex(i)\(.*\)@\1->GetModel(i)\2@' \
+  gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  Then manually move the ifdefs to include for loops.
+  * ifdef World::GetModel(string)
+  ~~~
+  sed -i -e 's@.*->GetModel([^i].*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' `grep -rlI 'GetModel(' gazebo\_*`
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->GetModel(\(.*\)@\1->ModelByName(\2@'
+  `grep -rlI 'GetModel(' gazebo\_*`
+  ~~~
+  Then manually merge with some ifdefs from LightByName
+  * ifdef World::GetEntity(string)
+  ~~~
+  sed -i -e 's@.*->GetEntity.*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' `grep -rlI 'GetEntity' gazebo\_*`
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->GetEntity(\(.*\)@\1->EntityByName(\2@'
+  `grep -rlI 'GetEntity(' gazebo\_*`
+  ~~~
+  * merge some ifdefs
+* gazebo8 warnings: ifdefs for Get.*Vel() (#655)
+* Fix gazebo8 warnings part 8: ifdef's for GetWorldPose (lunar-devel) (#652)
+  * gazebo_ros_vacuum_gripper: ifdef one GetWorldPose
+  * Fix conflicts
+* for gazebo8+, call functions without Get (#640)
+* Fix conflict (#647)
+* 2.7.3
+* Update changelogs
+* Fix gazebo8 warnings part 4: convert remaining local variables in plugins to ign-math (lunar-devel) (#634)
+  * plugins: convert all local vars to ign-math
+  * ft_sensor: fix gazebo7 build
+  * Use World::[GS]etGravity
+  * fix gravity syntax
+* Fix gazebo8 warnings part 3: more ign-math in plugins (lunar-devel) (#632)
+  * gazebo_plugins: more conversion to ign-math
+  * gazebo_plugins replace gazebo/math headers
+  * diff_drive plugin: convert types to ignition math
+  * skid_steer plugin: convert types to ignition math
+  * tricycle plugin: convert types to ignition math
+* Fix gazebo8 warnings part 2: replace private member gazebo::math types with ignition (lunar-devel) (#630)
+  * Remove old compiler directive blocks
+  * gazebo_ros_imu_sensor: convert to ignition math
+  * gazebo_ros_planar_move: ign private/local vars
+  * gazebo_ros_imu: ign private/local vars
+  * gazebo_ros_p3d: ign private/local vars
+* Replace Events::Disconnect* with pointer reset (#626)
+* joint_state_publisher: error in case a joint is not found (#609)
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* Revert gazebo8 changes in Lunar and back to use gazebo7 (#583)
+* 2.7.1
+* Update changelogs for first Lunar release
+* Fixes for compilation and warnings in Lunar-devel  (#573)
+  Multiple fixes for compilation and warnings coming from Gazebo8 and ignition-math3
+* Use 2.7.0 as starting version
+* Add an IMU sensor plugin that inherits from SensorPlugin (#363)
+  * added a IMU sensor plugin that inherits from SensorPlugin
+  * now the plugin works with multiple robots
+  * using GetParentName name instead of GetScopedName
+  * added comments to highlight the differents between GazeboRosImuSensor and GazeboRosIMU
+  * now the message header is properly handled, using bodyName parameter as frame_id
+  * added check on gazebo version
+  * added check for sensor null pointer
+  * changed deprecated functions for gazebo version >= 6
+  * fixed version check
+  * added missing sensor variable for LastUpdateTime() function call
+  * considering '/' included in the robotNamespace
+  * replaced "bodyFrame" with "frameName"
+* Less exciting console output (#561)
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* 2.5.12
+* Changelogs for next version
+* Revert catkin warning fix (#567)
+  Many regressions in third party software (see https://github.com/yujinrobot/kobuki_desktop/issues/50)
+* 2.5.11
+* Changelogs to prepare for next 2.5.11
+* Change build system to set DEPEND on Gazebo/SDFormat (fix catkin warning)
+  Added missing DEPEND clauses to catkin_package to fix gazebo catkin warning. Note that after the change problems could appear related to -lpthreads errors. This is an known issue related to catkin: https://github.com/ros/catkin/issues/856.
+* Fix: add gazebo_ros_range to catkin package libraries (#558)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Alessandro Settimi, Ben Wolsieffer, Chris Lalancette, Christoph Rist, Dave Coleman, Docker, G.Doisy, Gary Servin, Jacob Perron, Jose Luis Rivero, Kenneth Blomqvist, Kevin Allen, Marc Perales, Markus Bader, Martin Ganeff, Martin Oehler, Michael Görner, Morgan Quigley, Paul Bovbel, RemiRigal, Sam Pfeiffer, Sean Yen, Sean Yen [MSFT], Shane Loretz, Steve Peters, Steven Peters, Timo Korthals, Tobias Fischer, Wolfgang Merkt, deltaMASH, iche033
+
 2.5.10 (2017-03-03)
 -------------------
 * Revert catkin warnings to fix regressions (problems with catkin -lpthreads errors)

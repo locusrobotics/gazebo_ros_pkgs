@@ -97,6 +97,68 @@ Changelog for package gazebo_dev
 2.5.11 (2017-04-18)
 -------------------
 
+Forthcoming
+-----------
+* Only build these packages on jammy
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* [ROS-O] compatible patches for newer systems (#1543)
+  Co-authored-by: Jochen Sprickerhof <git@jochen.sprickerhof.de>
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* colcon.pkg: build gazebo first in colcon workspace (#1135)
+  Add a colcon.pkg file to gazebo_dev with gazebo's cmake project
+  name "Gazebo" listed as a dependency to support building
+  gazebo from source in a colcon workspace.
+  * Add colcon.pkg files for other packages
+  Copy colcon.pkg to gazebo_ros, gazebo_plugins, and
+  gazebo_ros_control so that --merge-install won't be required.
+* 2.9.1
+* Prepare changelogs
+* 2.9.0
+* Update changelogs
+* Gazebo 11 for Noetic (#1094)
+* Bump CMake version to avoid CMP0048 warning (#1066)
+* 2.8.5
+* Update changelog
+* 2.8.4
+* Update changelog for 2.8.4
+* 2.8.3
+* Update changelogs
+* 2.8.2
+* Prepare changelogs
+* 2.8.1
+* Prepare changelogs for release
+* Replace gazebo7 by gazebo9 in gazebo_dev. Gazebo9 is the official version supported in Melodic
+* Update version to 2.8.0
+* 2.7.4
+* Prepare changelogs for new release
+* 2.7.3
+* Update changelogs
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* Revert gazebo8 changes in Lunar and back to use gazebo7 (#583)
+* 2.7.1
+* Update changelogs for first Lunar release
+* Use gazeob8 as exec_depend
+* Use 2.7.0 as starting version
+* Depend on gazebo8 instead of gazebo7
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Gary Servin, Jose Luis Rivero, Kevin Allen, Michael Görner, Steve Peters, chapulina
+
 2.5.10 (2017-03-03)
 -------------------
 

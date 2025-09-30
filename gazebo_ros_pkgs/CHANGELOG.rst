@@ -59,6 +59,58 @@ Changelog for package gazebo_ros_pkgs
 2.5.11 (2017-04-18)
 -------------------
 
+Forthcoming
+-----------
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* 2.9.1
+* Prepare changelogs
+* 2.9.0
+* Update changelogs
+* Bump CMake version to avoid CMP0048 warning (#1066)
+* 2.8.5
+* Update changelog
+* Remove extra angle bracket (#895)
+* 2.8.4
+* Update changelog for 2.8.4
+* 2.8.3
+* Update changelogs
+* 2.8.2
+* Prepare changelogs
+* 2.8.1
+* Prepare changelogs for release
+* Update version to 2.8.0
+* 2.7.4
+* Prepare changelogs for new release
+* 2.7.3
+* Update changelogs
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* 2.7.1
+* Update changelogs for first Lunar release
+* Use 2.7.0 as starting version
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* 2.5.12
+* Changelogs for next version
+* 2.5.11
+* Changelogs to prepare for next 2.5.11
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, David V. Lu!!, Jose Luis Rivero, Kevin Allen
+
 2.5.10 (2017-03-03)
 -------------------
 

@@ -170,6 +170,270 @@ Changelog for package gazebo_ros
 * Use correct logerr method (`#557 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/557>`_)
 * Contributors: Alessandro Ambrosano, Dave Coleman, Gary Servin
 
+Forthcoming
+-----------
+* Only build these packages on jammy
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* [ROS-O] compatible patches for newer systems (#1543)
+  Co-authored-by: Jochen Sprickerhof <git@jochen.sprickerhof.de>
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* Only subscribe to /gazebo/performance_metrics when necessary (#1202)
+  We are currently subscribing to the /gazebo/performance_metrics topic
+  even if there are no subscribers to the ROS topic forwarding this data.
+  The link_states and model_states topics currently use an advertise
+  mechanism with callbacks when a subscriber connects or disconnects,
+  so I've used that same pattern for the performance_metrics topic.
+  This also helps workaround the deadlock documented in #1175 and
+  osrf/gazebo#2902.
+  This also adds a GAZEBO_ROS_HAS_PERFORMANCE_METRICS
+  macro that reduces duplication of the version checking logic for
+  performance metrics in gazebo and adds fixes some doc-string and
+  typos in existing code
+* [Noetic] Bridge to republish PerformanceMetrics in ROS (#1145)
+  Co-authored-by: Ian Chen <ichen@osrfoundation.org>
+* delete request msgs (#1160)
+* gazebo_ros_api_plugin cleanup (#1137)
+  Remove an unused overload of publishSimTime and add doxygen
+  for the remaining publishSimTime function.
+  * Remove duplicate code for /clock advertisement
+  The /clock topic is advertised in both loadGazeboRosApiPlugin
+  and advertiseServices. This removes the code from advertiseServices
+  and moves it earlier in loadGazeboRosApiPlugin.
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* colcon.pkg: build gazebo first in colcon workspace (#1135)
+  Add a colcon.pkg file to gazebo_dev with gazebo's cmake project
+  name "Gazebo" listed as a dependency to support building
+  gazebo from source in a colcon workspace.
+  * Add colcon.pkg files for other packages
+  Copy colcon.pkg to gazebo_ros, gazebo_plugins, and
+  gazebo_ros_control so that --merge-install won't be required.
+* 2.9.1
+* Prepare changelogs
+* 2.9.0
+* Update changelogs
+* [Noetic] changes to make it work with Python3 (#1069)
+  * Noetic - changes to make it work with Python3
+  Co-authored-by: Mabel Zhang <mabel.m.zhang@gmail.com>
+  Co-authored-by: Shane Loretz <sloretz@osrfoundation.org>
+* add node required to noetic (#1082)
+* add additional light options to 'set_light_properties' service (#874)
+  The optional 'Light' properties 'cast_shadows', 'specular', 'direction',
+  and 'pose' are not optional any more. These properties are now set via the
+  corresponding fields in the ROS message. By default, this will be 0.
+  https://github.com/ros-simulation/gazebo_ros_pkgs/pull/874
+* spawn_model: Fix urlparse imports for Python 3
+* spawn_model: Ensure that "model_xml" is a string, required for Python 3
+* catkin_find gazebo plugin from bin folder. (#993)
+* [Windows][melodic-devel] more Windows build break fix (#975)
+  * Fix CMake install error for Windows build.
+  * conditionally include <sys/time.h>
+* provide Windows implemenation for setenv. (#879)
+* implement basic gazebo scripts to support launch file on Windows build. (#880)
+* 2.8.5
+* Update changelog
+* Add output arg to launch files, plus some small fixes (melodic) (#907)
+  * Add output arg to empty_world
+  * add output arg to elevator_world
+  * add output arg to range_world
+  * don't set use_sim_time in range_world
+  Instead parse it to empty world, where it will be set.
+  * add xml prolog to all launch files
+  * Remove unnecessary arg in range_world.launch
+* use C++11 std sleep instead of usleep. (#877)
+* fix issue #198 (#825)
+* Lower minimum cmake version (#817)
+* 2.8.4
+* Update changelog for 2.8.4
+* SPAWN MODEL: more robust -package_to_model implementation (issue #449)
+* SPAWN MODEL: add stdin as source option
+* GAZEBO_ROS: refactor spawn_model script
+  * parse arguments with argparse
+  * remove deprecated/unused -gazebo and -trimesh options
+* ROSAPI: fix physics reconfigure within namespace (issue #507)
+* 2.8.3
+* Update changelogs
+* Use generic SIGINT parameter in kill command for gazebo script (melodic-devel) (#724)
+  * Use generic SIGINT parameter in kill command for gazebo script
+  * redirect to kill command to std_err
+* 2.8.2
+* Prepare changelogs
+* Fix the build on Ubuntu Artful. (#715)
+  Artful has some bugs in its cmake files for Simbody that
+  cause it to fail the build.  If we are on artful, remove
+  the problematic entries.
+* 2.8.1
+* Prepare changelogs for release
+* Update version to 2.8.0
+* Parameter to disable ROS network interaction from/to Gazebo (lunar-devel) (#704)
+  * Merge initial part of 585 PR
+  * Missing parts from the port to lunar
+  * Fix last remaining code from merge
+* Load the libgazebo_ros_api_plugin when starting gzclient so that the ROS event loop will turn over, which is required when you have a client-side Gazebo plugin that uses ROS. (#676)
+* Pass verbose argument to gzclient (#677)
+* strip comments from parsed urdf (#698)
+  Remove comments from urdf before trying to find packages. Otherwise non-existant packages will produce a fatal error, even though they are not used.
+* 2.7.4
+* Prepare changelogs for new release
+* Fix last gazebo8 warnings! (lunar-devel) (#664)
+  { port of pull request #658 }
+  ifdefs for World::GetSimTime and World::GetPhysicsEngine
+* Fix for relative frame errors (lunar-devel) (#663)
+  { port of pull request #605 }
+  I noticed a lot of errors when using relative reference frames in
+  Gazebo. When spawning the object, wrong multiplication order of
+  quaternions is applied (as per
+  [here](https://bitbucket.org/osrf/gazebo/src/a29d8dabed9a14fb6bafdcd31c84b160c00b127c/gazebo/math/Quaternion.cc?at=gazebo7&fileviewer=file-view-default#Quaternion.cc-391)).
+  The operation q1 *= q2 results in q1 = q1 * q2, but we wish to have q1 =
+  q2 * q1, since we apply rotation to q1.
+  When obtaining the relative pose of the object w.r.t. to a frame, I
+  noticed strange and inconsistent transformations. I used the reference
+  for chaining transformations defined
+  [here](http://osrf-distributions.s3.amazonaws.com/gazebo/api/dev/classgazebo_1_1math_1_1Pose.html)
+  to make the transformations cleaner.
+  Also, instead of using the relative entity, in the whole code the entity
+  is transformed to a link, which does not allow for specifying a model as
+  a relative entity.
+* Fix gazebo8 warnings part 7: retry #642 on lunar (#660)
+  ifdef's for Joint::GetAngle and some cleanup (#642)
+  * fix major version check >= 8, instead of > 8
+  * gazebo_ros_bumper: use new API in commented code
+  * gazebo_ros_api_plugin: world pose in local vars
+  * worldLinearVel as local var in hand of god plugin
+  * gazebo8+: Joint::GetAngle -> Joint::Position
+* Fix gazebo8 warnings part 10: ifdefs for GetModel, GetEntity, Light (lunar-devel) (#657)
+  * gazebo8 warnings: ifdef World::Light(string) calls
+  ~~~
+  sed -i -e 's@.*->Light(.*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->Light(\(.*\)@\1->LightByName(\2@' \
+  gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  * ifdef World::GetModel(int), World::GetModelCount()
+  First ifdef the GetModel(int) calls with the following:
+  ~~~
+  sed -i -e 's@.*GetModel(i).*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->ModelByIndex(i)\(.*\)@\1->GetModel(i)\2@' \
+  gazebo_ros/src/gazebo_ros_api_plugin.cpp
+  ~~~
+  Then manually move the ifdefs to include for loops.
+  * ifdef World::GetModel(string)
+  ~~~
+  sed -i -e 's@.*->GetModel([^i].*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' `grep -rlI 'GetModel(' gazebo\_*`
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->GetModel(\(.*\)@\1->ModelByName(\2@'
+  `grep -rlI 'GetModel(' gazebo\_*`
+  ~~~
+  Then manually merge with some ifdefs from LightByName
+  * ifdef World::GetEntity(string)
+  ~~~
+  sed -i -e 's@.*->GetEntity.*@#if GAZEBO_MAJOR_VERSION >= 8\
+  __REPLACE_\_&\
+  \#else\
+  &\
+  \#endif@' `grep -rlI 'GetEntity' gazebo\_*`
+  ~~~
+  ~~~
+  sed -i -e
+  's@^__REPLACE_\_\(.*\)->GetEntity(\(.*\)@\1->EntityByName(\2@'
+  `grep -rlI 'GetEntity(' gazebo\_*`
+  ~~~
+  * merge some ifdefs
+* gazebo8 warnings: ifdefs for Get.*Vel() (#655)
+* [gazebo_ros] don't overwrite parameter "use_sim_time" (lunar-devel) (#607)
+  * Parameter /use_sim_time is only set if not present on Parameter Server
+  * set parameter /use_sim_time in either case
+  * remove commented code
+* Fix gazebo8 warnings part 8: ifdef's for GetWorldPose (lunar-devel) (#652)
+  * gazebo_ros_vacuum_gripper: ifdef one GetWorldPose
+  * Fix conflicts
+* Prevents GAZEBO_MODEL_DATABASE_URI from being overwritten (#649)
+* for gazebo8+, call functions without Get (#640)
+* 2.7.3
+* Update changelogs
+* gazebo_ros_api_plugin: improve plugin xml parsing (#627)
+  An xml comment that start with plugin causes a seg-fault:
+  <!--plugin-->
+  or
+  <!--plugin filename="lib.so"/-->
+  This fixes the xml parsing to not try to add child elements
+  to xml comments.
+* Fix gazebo8 warnings part 5: ignition math in gazebo_ros (lunar-devel) (#636)
+  * gazebo_ros: ign-math in private API, local vars
+  * gazebo_ros: pass const reference instead of copy
+* Fix gazebo8 warnings part 4: convert remaining local variables in plugins to ign-math (lunar-devel) (#634)
+  * plugins: convert all local vars to ign-math
+  * ft_sensor: fix gazebo7 build
+  * Use World::[GS]etGravity
+  * fix gravity syntax
+* gazebo_ros: fix support for python3 (#629)
+* Replace Events::Disconnect* with pointer reset (#626)
+* Install spawn_model using catkin_install_python (#624)
+* Quote arguments to echo in libcommon.sh (#591)
+  If /bin/sh is provided by bash, echo will consume arguments such as `-e`. On such a system, running `rosrun gazebo_ros gzserver -e ode empty_world.world` will execute `gzserver` with the `-e` missing (meaning the world file is ignored).
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* Revert gazebo8 changes in Lunar and back to use gazebo7 (#583)
+* 2.7.1
+* Update changelogs for first Lunar release
+* Fixes for compilation and warnings in Lunar-devel  (#573)
+  Multiple fixes for compilation and warnings coming from Gazebo8 and ignition-math3
+* Fix warnings related to Light deprecated method
+* Use 2.7.0 as starting version
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* 2.5.12
+* Changelogs for next version
+* 2.5.11
+* Changelogs to prepare for next 2.5.11
+* [gazebo_ros] Changed the spawn model methods to spawn also lights. (#511)
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights (and renamed accordingly).
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+* Change build system to set DEPEND on Gazebo/SDFormat (fix catkin warning)
+  Added missing DEPEND clauses to catkin_package to fix gazebo catkin warning. Note that after the change problems could appear related to -lpthreads errors. This is an known issue related to catkin: https://github.com/ros/catkin/issues/856.
+* Use correct logerr method (#557)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Alessandro Ambrosano, Chris Lalancette, Christian Rauch, Dave Coleman, Gary Servin, Ian Chen, Jose Luis Rivero, Kartik Mohta, Kevin Allen, Mabel Zhang, Matthijs van der Burgh, Michael Görner, Paul Bovbel, Sean Yen, Sean Yen [MSFT], Steve Peters, Steven Peters
+
 2.5.10 (2017-03-03)
 -------------------
 * Revert catkin warnings to fix regressions (problems with catkin -lpthreads errors)

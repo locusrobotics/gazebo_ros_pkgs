@@ -69,6 +69,76 @@ Changelog for package gazebo_msgs
 * Changed the spawn model methods to spawn also lights. (`#511 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/511>`_)
 * Contributors: Alessandro Ambrosano
 
+Forthcoming
+-----------
+* 2.9.3
+* Update changelogs
+* Noetic: Add `<deprecated>` tag to package.xml files (#1566)
+  These packages are now deprecated with Gazebo classic 11 reaching
+  end-of-life. This adds the `<deprecated>` tag (https://www.ros.org/reps/rep-0149.html#deprecated)
+  enabling tools to notify users about the deprecation.
+* Add ahcorde as maintainer (noetic-devel) (#1437)
+* 2.9.2
+* Generate changelogs
+* [Noetic] Bridge to republish PerformanceMetrics in ROS (#1145)
+  Co-authored-by: Ian Chen <ichen@osrfoundation.org>
+* 2.9.1
+* Prepare changelogs
+* 2.9.0
+* Update changelogs
+* Bump CMake version to avoid CMP0048 warning (#1066)
+* add additional light options to 'set_light_properties' service (#874)
+  The optional 'Light' properties 'cast_shadows', 'specular', 'direction',
+  and 'pose' are not optional any more. These properties are now set via the
+  corresponding fields in the ROS message. By default, this will be 0.
+  https://github.com/ros-simulation/gazebo_ros_pkgs/pull/874
+* 2.8.5
+* Update changelog
+* 2.8.4
+* Update changelog for 2.8.4
+* GAZEBO_MSGS: correct documentation on SetModelConfiguration.srv
+* 2.8.3
+* Update changelogs
+* 2.8.2
+* Prepare changelogs
+* 2.8.1
+* Prepare changelogs for release
+* Update version to 2.8.0
+* 2.7.4
+* Prepare changelogs for new release
+* 2.7.3
+* Update changelogs
+* 2.7.2
+* Update changelogs for 2.7.2 release. Back to use gazebo7
+* 2.7.1
+* Update changelogs for first Lunar release
+* Use 2.7.0 as starting version
+* Add catkin package(s) to provide the default version of Gazebo - take II (kinetic-devel) (#571)
+  * Added catkin package gazebo_dev which provides the cmake config of the installed Gazebo version
+  Conflicts:
+  gazebo_plugins/package.xml
+  gazebo_ros/package.xml
+  gazebo_ros_control/package.xml
+  * gazebo_plugins/gazebo_ros: removed dependency SDF from CMakeLists.txt
+  The sdformat library is an indirect dependency of Gazebo and does not need to be linked explicitly.
+  * gazebo_dev: added execution dependency gazebo
+* 2.5.12
+* Changelogs for next version
+* 2.5.11
+* Changelogs to prepare for next 2.5.11
+* [gazebo_ros] Changed the spawn model methods to spawn also lights. (#511)
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights (and renamed accordingly).
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+  * [gazebo_ros] Changed the spawn model methods to spawn also lights.
+  Created services for deleting lights, and getting and settings lights' properties.
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Alessandro Ambrosano, Christian Rauch, Jose Luis Rivero, Kevin Allen
+
 2.5.10 (2017-03-03)
 -------------------
 
