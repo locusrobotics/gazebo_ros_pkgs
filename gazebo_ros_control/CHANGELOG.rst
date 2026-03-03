@@ -105,6 +105,9 @@ Changelog for package gazebo_ros_control
   * fix warning message fix
 * Contributors: Andreas Bihlmaier, Dave Coleman
 
+Forthcoming
+-----------
+
 2.10.0 (2025-09-30)
 -------------------
 * Only build these packages on jammy
