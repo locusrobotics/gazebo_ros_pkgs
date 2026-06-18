@@ -170,6 +170,9 @@ Changelog for package gazebo_ros
 * Use correct logerr method (`#557 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/557>`_)
 * Contributors: Alessandro Ambrosano, Dave Coleman, Gary Servin
 
+Forthcoming
+-----------
+
 2.11.0 (2026-03-03)
 -------------------
 
