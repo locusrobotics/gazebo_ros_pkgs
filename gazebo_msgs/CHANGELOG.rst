@@ -69,8 +69,8 @@ Changelog for package gazebo_msgs
 * Changed the spawn model methods to spawn also lights. (`#511 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/511>`_)
 * Contributors: Alessandro Ambrosano
 
-Forthcoming
------------
+2.12.0 (2026-06-18)
+-------------------
 
 2.11.0 (2026-03-03)
 -------------------
