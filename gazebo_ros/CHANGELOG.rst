@@ -170,6 +170,13 @@ Changelog for package gazebo_ros
 * Use correct logerr method (`#557 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/557>`_)
 * Contributors: Alessandro Ambrosano, Dave Coleman, Gary Servin
 
+Forthcoming
+-----------
+* Remove python-argparse dependency
+  This is likely carry-over from supporting python 2.x. In python3 the
+  argparse module is built-in, and this dependency isn't needed.
+* Contributors: James Prestwood
+
 2.11.0 (2026-03-03)
 -------------------
 
