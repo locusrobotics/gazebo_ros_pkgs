@@ -2,8 +2,8 @@
 Changelog for package gazebo_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.9.4 (2026-10-23)
+------------------
 * Remove python-argparse dependency
   This is likely carry-over from supporting python 2.x. In python3 the
   argparse module is built-in, and this dependency isn't needed.
