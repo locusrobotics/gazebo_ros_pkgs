@@ -2,6 +2,13 @@
 Changelog for package gazebo_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove python-argparse dependency
+  This is likely carry-over from supporting python 2.x. In python3 the
+  argparse module is built-in, and this dependency isn't needed.
+* Contributors: James Prestwood
+
 2.9.3 (2025-02-26)
 ------------------
 * Noetic: Add `<deprecated>` tag to package.xml files (`#1566 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1566>`_)
